@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Looper;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,22 +32,32 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Spending extends Fragment{
     private View searchLocation;
     private FusedLocationProviderClient client;
+    private View spend;
+    private Spinner spinner;
+    private EditText amount;
     LocationRequest locationRequest;
     LocationCallback locationCallback;
-
+    DatabaseHelper db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.spending, container, false);
-        final Spinner spinner = (Spinner) rootView.findViewById(R.id.category);
+        spinner = (Spinner) rootView.findViewById(R.id.category);
         this.searchLocation = (Button) rootView.findViewById(R.id.searchLocation);
+        this.spend = (Button) rootView.findViewById(R.id.spend);
+        this.amount = (EditText) rootView.findViewById(R.id.amount);
+
+        db = new DatabaseHelper(getActivity());
 
         List<String> categories = new ArrayList<String>();
         categories.add("Food");
@@ -62,6 +74,28 @@ public class Spending extends Fragment{
 
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
+
+        this.spend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //get spending amount
+                double tempAmount = Double.parseDouble(amount.getText().toString());
+
+                //generate date
+                Date c = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate = df.format(c);
+
+                //get category
+                String tempCat = spinner.getSelectedItem().toString();
+
+                if(tempAmount>0){
+                    boolean warningMsg = db.insertSpending(formattedDate ,tempAmount,tempCat,true,"aaa");
+                    if(warningMsg==true)
+                        Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         client = LocationServices.getFusedLocationProviderClient(getActivity());
         return rootView;
