@@ -88,7 +88,7 @@ public class Spending extends Fragment{
 
                 //get category
                 String tempCat = spinner.getSelectedItem().toString();
-sda
+
                 if(tempAmount>0){
                     boolean warningMsg = db.insertSpending(formattedDate ,tempAmount,tempCat,true,"aaa");
                     if(warningMsg==true)
