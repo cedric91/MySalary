@@ -1,0 +1,23 @@
+package mysalary.dj.com.mysalary;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class DatabaseHelper extends SQLiteOpenHelper {
+
+    public DatabaseHelper(Context context) {
+        super(context, "mySalary", null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE table salary(month DATE, amount DECIMAL(6,2))");
+        db.execSQL("CREATE table spending(month DATE, amount DECIMAL(6,2), category text, place text, claimable boolean)");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+}
