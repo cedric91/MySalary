@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,7 @@ public class Spending extends Fragment{
 
         db = new DatabaseHelper(getActivity());
 
-        List<String> categories = new ArrayList<String>();
+        final List<String> categories = new ArrayList<String>();
         categories.add("Food");
         categories.add("Grocer");
         categories.add("Entertainment");
@@ -81,7 +82,9 @@ public class Spending extends Fragment{
             @Override
             public void onClick(View v) {
                 //get spending amount
-                double tempAmount = Double.parseDouble(amount.getText().toString());
+                double tempAmount=0;
+                if(!amount.getText().toString().isEmpty())
+                    tempAmount = Double.parseDouble(amount.getText().toString());
 
                 //generate date
                 Date c = Calendar.getInstance().getTime();
@@ -93,8 +96,13 @@ public class Spending extends Fragment{
 
                 if(tempAmount>0){
                     boolean warningMsg = db.insertSpending(formattedDate ,tempAmount,tempCat,true,"aaa");
-                    if(warningMsg==true)
+                    if(warningMsg==true) {
                         Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+                        amount.setText("");
+                    }
+                }
+                else{
+                    Toast.makeText(getContext(), "Please insert your spending", Toast.LENGTH_LONG).show();
                 }
             }
         });

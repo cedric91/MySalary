@@ -2,6 +2,8 @@ package mysalary.dj.com.mysalary;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,8 @@ public class Summary extends Fragment {
 
         TextView monthlySpent = (TextView)rootView.findViewById(R.id.monthlySpending);
         spinner = (Spinner) rootView.findViewById(R.id.records);
+
+
 
         db = new DatabaseHelper(getActivity());
         Cursor cursor = db.readSpending();
