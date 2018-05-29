@@ -38,6 +38,7 @@ public class Summary extends Fragment {
             int i = 0;
             do {
                 date[i] = (String.valueOf(readMonthCursor.getString(cursor.getColumnIndex("month"))));
+                i++;
             }while(readMonthCursor.moveToNext());
 
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, Arrays.asList(date));

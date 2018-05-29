@@ -48,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor readMonth(){
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT month FROM spending GROUP BY month;";
+        String query = "SELECT (strftime('%Y',month)||'/'||strftime('%m',month)) as month FROM spending GROUP BY strftime('%Y',month), strftime('%m',month);";
         return db.rawQuery(query,null);
     }
 }
