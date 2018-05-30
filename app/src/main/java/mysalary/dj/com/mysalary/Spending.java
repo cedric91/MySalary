@@ -99,6 +99,8 @@ public class Spending extends Fragment{
                     if(warningMsg==true) {
                         Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
                         amount.setText("");
+                        Summary summary = (Summary)getFragmentManager().getFragments().get(1);
+                        summary.onResume();
                     }
                 }
                 else{

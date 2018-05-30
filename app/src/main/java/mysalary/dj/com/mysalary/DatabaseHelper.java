@@ -46,6 +46,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query,null);
     }
 
+    public Cursor readSpending(String dateYear){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM spending WHERE month LIKE '"+dateYear+"%';";
+        return db.rawQuery(query,null);
+    }
+
     public Cursor readMonth(){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT (strftime('%Y',month)||'/'||strftime('%m',month)) as month FROM spending GROUP BY strftime('%Y',month), strftime('%m',month);";
